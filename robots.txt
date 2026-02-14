@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://drewno-falarz.pl/sitemap.xml
+
+# Disallow indexing of certain file types
+Disallow: /*.css$
+Disallow: /*.js$
+Disallow: /assets/
+
+# Allow important pages
+Allow: /
+Allow: /index.html
+Allow: /projects-gallery/
