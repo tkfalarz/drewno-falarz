@@ -1,15 +1,16 @@
+# Robots.txt for drewno-falarz.pl
+# Allows search engines to crawl the website and specifies sitemap location
+
 User-agent: *
 Allow: /
-
-# Sitemap location
-Sitemap: https://drewno-falarz.pl/sitemap.xml
-
-# Disallow indexing of certain file types
-Disallow: /*.css$
-Disallow: /*.js$
 Disallow: /assets/
 
-# Allow important pages
+# Specific rules for Google
+User-agent: Googlebot
 Allow: /
-Allow: /index.html
-Allow: /projects-gallery/
+
+# Sitemap location for search engines
+Sitemap: https://drewno-falarz.pl/sitemap.xml
+
+# Crawl delay to avoid server overload
+Crawl-delay: 1
