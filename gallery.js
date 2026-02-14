@@ -217,41 +217,51 @@ function initCarousel(totalImages) {
   // Start autoplay
   startAutoplay(totalImages);
 
-  // Add touch support for mobile devices
+  // Add touch support for mobile devices with improved swipe detection
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
+  let touchEndY = 0;
   
+  const carouselWrapper = document.querySelector('.carousel-wrapper');
   const gallery = document.getElementById('projects-gallery');
   
-  gallery.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-  });
-  
-  gallery.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipeGesture();
-  });
+  if (carouselWrapper) {
+    carouselWrapper.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    
+    carouselWrapper.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+      handleSwipeGesture();
+    }, { passive: true });
+  }
   
   function handleSwipeGesture() {
     const swipeThreshold = 50;
-    const diff = touchStartX - touchEndX;
+    const verticalThreshold = 30; // Prevent diagonal swipes from triggering
+    const horizontalDiff = touchStartX - touchEndX;
+    const verticalDiff = Math.abs(touchStartY - touchEndY);
     
-    if (Math.abs(diff) > swipeThreshold) {
-      if (diff > 0) {
+    // Only trigger if horizontal movement is significant and vertical movement is minimal
+    if (Math.abs(horizontalDiff) > swipeThreshold && verticalDiff < verticalThreshold) {
+      if (horizontalDiff > 0) {
         // Swipe left - show next
         const itemsPerView = getImagesPerView();
         const maxIndex = totalImages - itemsPerView;
         if (currentCarouselIndex < maxIndex) {
           currentCarouselIndex++;
           updateCarousel();
-          restartAutoplay(totalImages); // Restart autoplay after manual navigation
+          restartAutoplay(totalImages);
         }
       } else {
         // Swipe right - show previous
         if (currentCarouselIndex > 0) {
           currentCarouselIndex--;
           updateCarousel();
-          restartAutoplay(totalImages); // Restart autoplay after manual navigation
+          restartAutoplay(totalImages);
         }
       }
     }
